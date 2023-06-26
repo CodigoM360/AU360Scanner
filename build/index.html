@@ -1,439 +1,89 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@0.4.2/dist/mindar.prod-min.js"></script>
-    <script src="../../libs/mindar/mindar-image-three.prod.js"></script>
-    <script src="../src/firebaseConfig.js" type="module"></script>
-    <script src="./main.js" type="module"></script>
-    <style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
 
-/*******************************************************
-                    BODY/BACKGROUNDS
-********************************************************/
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/9.23.0/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/9.23.0/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/9.23.0/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/9.23.0/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.23.0/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/9.23.0/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/9.23.0/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/9.23.0/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/9.23.0/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/9.23.0/firebase-performance-compat.js"></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
-      html,
-      body {
-        position: relative;
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+    <style media="screen">
+      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
+      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
+      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
+      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+      @media (max-width: 600px) {
+        body, #message { margin-top: 0; background: white; box-shadow: none; }
+        body { border-top: 16px solid #ffa100; }
       }
-
-      .background {
-        position: relative;
-        margin: 0 auto;
-        background-color: black;
-        opacity: 0.9;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .flexbox-container-one {
-        display: flex;
-        width: 100%;
-        height: 100%;        
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-        border: 15px solid white;
-      }
-
-
-/*******************************************************
-              INTRODUCTORY CIRCLE BUTTON
-********************************************************/
-
-    .circle {
-      position: absolute;
-    }
-
-    #intro_circle {
-      position: absolute;
-      width: 550px;
-      height: 550px;
-      border-radius: 50%;
-      background-color: grey;
-      text-align: center;
-      text-shadow: black;
-      font-size: 20px;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 1;
-    }
-    
-    .intro-text {
-      position: absolute;
-      text-align: center;
-      text-shadow: black;
-      font-size: 50px;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 1;
-    }
-
-    .circle.pulse-animation {
-      animation: pulse 0.5s ease-in-out forwards;
-    }
-
-    .pulse {
-      animation: pulse 0.5s ease-in-out;
-    }
-
-    .pulse-out {
-      animation: pulse-out 0.5s ease-in-out forwards;
-    }
-    
-    @keyframes pulse {
-      0% {
-        opacity: 1;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.5;
-        transform: scale(0.75);
-      }
-      100% { 
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    @keyframes pulse-out {
-      0% {
-        opacity: 1;
-        transform: scale(1);
-      }
-      25% {
-        opacity: 0.5;
-        transform: scale(0.75);
-      }
-      50% {
-        opacity: 0.3;
-        transform: scale(0.50);
-      }
-      100% { 
-        opacity: 0;
-        transform: scale(2.5);
-      }
-    }
-
-/*******************************************************
-              IMAGE TARGET BUTTON OPTIONS
-********************************************************/
-
-      .hidden {
-        display: none;
-      }
-
-      .visible {
-        display: flex;
-      }
-
-      #info {
-        position: absolute;
-        padding: 10px 20px;
-        width: 1000px;
-        height: 150px;
-        top: 50px;
-        text-align: center;
-        text-shadow: black;
-        font-size: 2rem;
-        font-family: Arial, Helvetica, sans-serif;
-        background-color: aliceblue;
-        opacity: 0.9;
-        border-radius: 50px 50px 50px 50px / 40px 40px 40px 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        z-index: 2;
-      }
-
-      .button {
-        display: none;
-        padding: 10px 20px;
-        width: 270px;
-        height: 150px;
-        border-radius: 50px 50px 50px 50px / 40px 40px 40px 40px;
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-        position: relative;
-        text-align: center;
-        font-size: 1rem;
-        line-height: 25px;
-        z-index: -1;
-        transition: all 0.5s ease-out;
-      }
- 
-      .button:hover {
-        background-color: #0062cc;
-      } 
-
-      #image-button {
-        position: relative;
-        top: -3px;
-        left: -70px;
-        z-index: 2;
-        text-align: center;
-        text-shadow: black;
-        font-size: 20px;
-        color: white;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-      }
-      
-      #asset-button {
-        position: relative;
-        top: -3px;
-        left: 70px;
-        z-index: 2;
-        text-align: center;
-        text-shadow: black;
-        font-size: 20px;
-        color: white;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-      }
-
-/*******************************************************
-                        SCANNER
-********************************************************/
-
-      .flexbox-container-two {
-        display: flex;
-        width: 100%;
-        height: 100%;        
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-        border-radius: 50%;
-      }
-   
-      #scanning {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background: transparent;
-        z-index: 2;
-      }
-    
-      @media (min-aspect-ratio: 1/1) {
-        #scanning .inner {
-          width: 50vh;
-          height: 50vh;
-        }
-      }
-    
-      @media (max-aspect-ratio: 1/1) {
-        #scanning .inner {
-          width: 80vw;
-          height: 80vw;
-        }
-      }
-    
-      #scanning .inner {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-    
-        background:
-          linear-gradient(to right, white 10px, transparent 10px) 0 0,
-          linear-gradient(to right, white 10px, transparent 10px) 0 100%,
-          linear-gradient(to left, white 10px, transparent 10px) 100% 0,
-          linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
-          linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
-          linear-gradient(to bottom, white 10px, transparent 10px) 100% 0,
-          linear-gradient(to top, white 10px, transparent 10px) 0 100%,
-          linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
-        background-repeat: no-repeat;
-        background-size: 40px 40px;
-      }
-    
-      #scanning.hidden {
-        display: none;
-      } 
-    
-      #scanning .inner .scanline {
-        position: absolute;
-        width: 100%;
-        height: 10px;
-        background: white;
-        animation: move 2s linear infinite;
-      }
-
-      @keyframes move {    
-        0%,
-        100% {
-          top: 0%
-        } 
-        50% {
-          top: calc(100% - 10px)
-        } 
-      }
-
-/*******************************************************
-                    CAPTURE BUTTON
-********************************************************/
-      
-.capture {
-  display: none;
-  position: fixed;
-  bottom: 2vh;
-  left: 50%;
-  height: 12vw; /* increased from 4vw */
-  width: 12vw; /* increased from 4vw */
-  border: solid 2px;
-  border-radius: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
-/*******************************************************
-                      BACK BUTTON
-********************************************************/
-
-#backButton {
-  display: none;
-  position: fixed;
-  bottom: 2vh;
-  left: 100px;
-  height: 8vw; /* increased from 3vw */
-  width: 8vw; /* increased from 3vw */
-  border: solid 2px;
-  background-color: #007bff;
-  border-radius: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
-#back_icon {
-  position: inherit;
-  width: 7vw; /* increased from 2vw */
-  height: 7vw; /* increased from 2vw */
-  bottom: 1.2vh;
-  left: 5%;
-  border-radius: 50%;
-  z-index: 11;
-}
-
-      @media (min-aspect-ratio: 1/1) {
-        #switch_icon .inner {
-          width: 50vh;
-          height: 50vh;
-        }
-      }
-    
-      @media (max-aspect-ratio: 1/1) {
-        #swith_icon .inner {
-          width: 80vw;
-          height: 80vw;
-        }
-      }
-
-/*******************************************************
-                    PREVIEW SECTION
-********************************************************/
-
-      #preview {
-        position: fixed;
-        z-index: 10;
-        left: 10%;
-        top: 10%;
-        width: 80%;
-        height: 80%;
-        border: solid 10px white;
-        visibility: hidden;
-      }
-
-      #preview-image {
-        width: 100%;
-        height: 100%;
-      }
-
-      #preview-close {
-        position: absolute;
-        right: 0;
-        top: 0;
-        font-size: 20px;
-        padding: 5px;
-        border: solid 1px;
-        cursor: pointer;
-        color: white;
-        border: solid 5px white;
-        right: -5px;
-        top: -5px;
-      }
-
-      #preview-share {
-        border: solid 1px;
-        text-align: center;
-        cursor: pointer;
-        background: white;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 10px;
-        padding: 10px 30px;
-        border-radius: 10px;
-        border: none;
-      }
-
-/*******************************************************
-                          END
-********************************************************/
-
     </style>
-    </head>
-    <body>
-      <div class="flexbox-container-one">
-        <div class="background" id="B_G">
-          <h1 id="info">Here you will upload your files to display live, using the CodigoM360 Scanner. Make sure your 3D
-            asset has .glb/.gltf extension.
-            If issues arise with .gltf, .glb will almost always work.</h1>
-          <input type="file" id="fileInput" style="display: none;">
-          <button class="button image" id="image-button">Please upload your image file here</button>
-          <input type="file" id="assetInput" accept=".glb, .gltf" style="display: none;">
-          <button class="button asset" id="asset-button">Please upload your .glb/.gltf 3D asset here</button>
-          <button class="circle" id="intro_circle">
-            <span class="intro-text"> Welcome to the CodigoM360 scanner. Please press me!</span>
-          </button>
-        </div>
-      </div>
-      <div class="flexbox-container-two">
-        <div id="scanning" class="hidden">
-          <div class="inner">
-            <div class="scanline"></div>
-          </div>
-        </div>
-        <button class="capture"></button>
-        <button id="backButton"><img id="back_icon" src="../../assets/targets/backSymbol.png" alt=""></button>
-        <div id="preview">
-          <div id="preview-close">X</div>
-          <img id="preview-image" />
-          <div id="preview-share">Share</div>
-        </div>
-      </div>
-    </body>
-    
-    </html>
+  </head>
+  <body>
+    <div id="message">
+      <h2>Welcome</h2>
+      <h1>Firebase Hosting Setup Complete</h1>
+      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
+      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+    </div>
+    <p id="load">Firebase SDK Loading&hellip;</p>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadEl = document.querySelector('#load');
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        // firebase.firestore().doc('/foo/bar').get().then(() => { });
+        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        // firebase.analytics(); // call to activate
+        // firebase.analytics().logEvent('tutorial_completed');
+        // firebase.performance(); // call to activate
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+        try {
+          let app = firebase.app();
+          let features = [
+            'auth', 
+            'database', 
+            'firestore',
+            'functions',
+            'messaging', 
+            'storage', 
+            'analytics', 
+            'remoteConfig',
+            'performance',
+          ].filter(feature => typeof app[feature] === 'function');
+          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
+        } catch (e) {
+          console.error(e);
+          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+        }
+      });
+    </script>
+  </body>
+</html>

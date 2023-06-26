@@ -1,5 +1,5 @@
-import { loadGLTF } from "../../libs/loader.js";
 import { storage, storageRef } from "../src/firebaseConfig.js"; 
+import { loadGLTF } from "../../libs/loader.js";
 const THREE = window.MINDAR.IMAGE.THREE;
 
 /* Enter DOM */
@@ -73,14 +73,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (file) {
           const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
           console.log('img: ', img);
-          if (img) {
+          console.log('img.src: ', img.src);
+          if (img) { 
             compile_Mind(img, nameWithoutExtension).then((mindFile) => {
               console.log("Official .mind file: ", mindFile);
               selectedValue = mindFile;
               const mindRef = storageRef(storage, `mind/${mindFile.name}`);
-              /*const imageRef = storageRef(storage, 'mind_images');
-              const mindRef = storageRef(storage, `mind_images/${mindFile}`);*/
               console.log(".mind file set to selectedValue: ", selectedValue);
               count += 1;
               console.log("count is now: ", count);
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   console.log('Mapping outside of Intro: ', imageTargetModelCreated);
-
+  
   const compile_Mind = async (images, imgName) => {
     const compiler = new window.MINDAR.Compiler();
     const dataList = await compiler.compileImageTargets(images);
@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
  
   const loadModel = async (selectedValue) => {
-    const modelURL = imageTargetModelCreated[selectedValue];
+    const modelURL = imageTargetModelCreated[selectedValue].name;
     console.log("Loading model ...", modelURL);
     const of_model = await loadGLTF(modelURL);
     

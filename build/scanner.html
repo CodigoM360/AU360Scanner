@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
+    <script defer src="/__/firebase/9.23.0/firebase-storage-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@0.4.2/dist/mindar.prod-min.js"></script>
+    <script src="../../libs/mindar/mindar-image-three.prod.js"></script>
+    <style>
+
+/*******************************************************
+                    BODY/BACKGROUNDS
+********************************************************/
+
+      html,
+      body {
+        position: relative;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .background {
+        position: relative;
+        margin: 0 auto;
+        background-color: black;
+        opacity: 0.9;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .flexbox-container-one {
+        display: flex;
+        width: 100%;
+        height: 100%;        
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        border: 15px solid white;
+      }
+
+
+/*******************************************************
+              INTRODUCTORY CIRCLE BUTTON
+********************************************************/
+
+    .circle {
+      position: absolute;
+    }
+
+    #intro_circle {
+      position: absolute;
+      width: 550px;
+      height: 550px;
+      border-radius: 50%;
+      background-color: grey;
+      text-align: center;
+      text-shadow: black;
+      font-size: 20px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1;
+    }
+    
+    .intro-text {
+      position: absolute;
+      text-align: center;
+      text-shadow: black;
+      font-size: 50px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    .circle.pulse-animation {
+      animation: pulse 0.5s ease-in-out forwards;
+    }
+
+    .pulse {
+      animation: pulse 0.5s ease-in-out;
+    }
+
+    .pulse-out {
+      animation: pulse-out 0.5s ease-in-out forwards;
+    }
+    
+    @keyframes pulse {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: scale(0.75);
+      }
+      100% { 
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes pulse-out {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      25% {
+        opacity: 0.5;
+        transform: scale(0.75);
+      }
+      50% {
+        opacity: 0.3;
+        transform: scale(0.50);
+      }
+      100% { 
+        opacity: 0;
+        transform: scale(2.5);
+      }
+    }
+
+/*******************************************************
+              IMAGE TARGET BUTTON OPTIONS
+********************************************************/
+
+      .hidden {
+        display: none;
+      }
+
+      .visible {
+        display: flex;
+      }
+
+      #info {
+        position: absolute;
+        padding: 10px 20px;
+        width: 1000px;
+        height: 150px;
+        top: 50px;
+        text-align: center;
+        text-shadow: black;
+        font-size: 2rem;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: aliceblue;
+        opacity: 0.9;
+        border-radius: 50px 50px 50px 50px / 40px 40px 40px 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      .button {
+        display: none;
+        padding: 10px 20px;
+        width: 270px;
+        height: 150px;
+        border-radius: 50px 50px 50px 50px / 40px 40px 40px 40px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        position: relative;
+        text-align: center;
+        font-size: 1rem;
+        line-height: 25px;
+        z-index: -1;
+        transition: all 0.5s ease-out;
+      }
+ 
+      .button:hover {
+        background-color: #0062cc;
+      } 
+
+      #image-button {
+        position: relative;
+        top: -3px;
+        left: -70px;
+        z-index: 2;
+        text-align: center;
+        text-shadow: black;
+        font-size: 20px;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+      
+      #asset-button {
+        position: relative;
+        top: -3px;
+        left: 70px;
+        z-index: 2;
+        text-align: center;
+        text-shadow: black;
+        font-size: 20px;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+/*******************************************************
+                        SCANNER
+********************************************************/
+
+      .flexbox-container-two {
+        display: flex;
+        width: 100%;
+        height: 100%;        
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        border-radius: 50%;
+      }
+   
+      #scanning {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: transparent;
+        z-index: 2;
+      }
+    
+      @media (min-aspect-ratio: 1/1) {
+        #scanning .inner {
+          width: 50vh;
+          height: 50vh;
+        }
+      }
+    
+      @media (max-aspect-ratio: 1/1) {
+        #scanning .inner {
+          width: 80vw;
+          height: 80vw;
+        }
+      }
+    
+      #scanning .inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    
+        background:
+          linear-gradient(to right, white 10px, transparent 10px) 0 0,
+          linear-gradient(to right, white 10px, transparent 10px) 0 100%,
+          linear-gradient(to left, white 10px, transparent 10px) 100% 0,
+          linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
+          linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
+          linear-gradient(to bottom, white 10px, transparent 10px) 100% 0,
+          linear-gradient(to top, white 10px, transparent 10px) 0 100%,
+          linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
+        background-repeat: no-repeat;
+        background-size: 40px 40px;
+      }
+    
+      #scanning.hidden {
+        display: none;
+      } 
+    
+      #scanning .inner .scanline {
+        position: absolute;
+        width: 100%;
+        height: 10px;
+        background: white;
+        animation: move 2s linear infinite;
+      }
+
+      @keyframes move {    
+        0%,
+        100% {
+          top: 0%
+        } 
+        50% {
+          top: calc(100% - 10px)
+        } 
+      }
+
+/*******************************************************
+                    CAPTURE BUTTON
+********************************************************/
+      
+.capture {
+  display: none;
+  position: fixed;
+  bottom: 2vh;
+  left: 50%;
+  height: 12vw; /* increased from 4vw */
+  width: 12vw; /* increased from 4vw */
+  border: solid 2px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+/*******************************************************
+                      BACK BUTTON
+********************************************************/
+
+#backButton {
+  display: none;
+  position: fixed;
+  bottom: 2vh;
+  left: 100px;
+  height: 8vw; /* increased from 3vw */
+  width: 8vw; /* increased from 3vw */
+  border: solid 2px;
+  background-color: #007bff;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+#back_icon {
+  position: inherit;
+  width: 7vw; /* increased from 2vw */
+  height: 7vw; /* increased from 2vw */
+  bottom: 1.2vh;
+  left: 5%;
+  border-radius: 50%;
+  z-index: 11;
+}
+
+      @media (min-aspect-ratio: 1/1) {
+        #switch_icon .inner {
+          width: 50vh;
+          height: 50vh;
+        }
+      }
+    
+      @media (max-aspect-ratio: 1/1) {
+        #swith_icon .inner {
+          width: 80vw;
+          height: 80vw;
+        }
+      }
+
+/*******************************************************
+                    PREVIEW SECTION
+********************************************************/
+
+      #preview {
+        position: fixed;
+        z-index: 10;
+        left: 10%;
+        top: 10%;
+        width: 80%;
+        height: 80%;
+        border: solid 10px white;
+        visibility: hidden;
+      }
+
+      #preview-image {
+        width: 100%;
+        height: 100%;
+      }
+
+      #preview-close {
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 20px;
+        padding: 5px;
+        border: solid 1px;
+        cursor: pointer;
+        color: white;
+        border: solid 5px white;
+        right: -5px;
+        top: -5px;
+      }
+
+      #preview-share {
+        border: solid 1px;
+        text-align: center;
+        cursor: pointer;
+        background: white;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 10px;
+        padding: 10px 30px;
+        border-radius: 10px;
+        border: none;
+      }
+
+/*******************************************************
+                          END
+********************************************************/
+
+    </style>
+    </head>
+    
+    <body>
+      <div class="flexbox-container-one">
+        <div class="background" id="B_G">
+          <h1 id="info">Here you will upload your files to display live, using the CodigoM360 Scanner. Make sure your 3D
+            asset has .glb/.gltf extension.
+            If issues arise with .gltf, .glb will almost always work.</h1>
+          <input type="file" id="fileInput" style="display: none;">
+          <button class="button image" id="image-button">Please upload your image file here</button>
+          <input type="file" id="assetInput" accept=".glb, .gltf" style="display: none;">
+          <button class="button asset" id="asset-button">Please upload your .glb/.gltf 3D asset here</button>
+          <button class="circle" id="intro_circle">
+            <span class="intro-text"> Welcome to the CodigoM360 scanner. Please press me!</span>
+          </button>
+        </div>
+      </div>
+      <div class="flexbox-container-two">
+        <div id="scanning" class="hidden">
+          <div class="inner">
+            <div class="scanline"></div>
+          </div>
+        </div>
+        <button class="capture"></button>
+        <button id="backButton"><img id="back_icon" src="../../assets/targets/backSymbol.png" alt=""></button>
+        <div id="preview">
+          <div id="preview-close">X</div>
+          <img id="preview-image" />
+          <div id="preview-share">Share</div>
+        </div>
+      </div>
+      <script src="../src/firebaseConfig.js" type="module"></script>
+      <script src="./main.js" type="module"></script>
+    </body>
+    
+    </html>

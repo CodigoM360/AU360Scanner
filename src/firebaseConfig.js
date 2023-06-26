@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "/firebase/app";
-//import { getAnalytics } from "firebase/analytics";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "/firebase/storage"; 
+import { updateMetadata, getStorage, ref, uploadBytesResumable, getDownloadURL, getMetadata } from "/firebase/storage"; 
+//import { MRef } from "../build/main.js"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,16 +22,32 @@ export const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
 export const storageRef = ref(storage, 'some-child');
 
-// 'file' comes from the Blob or File API
-uploadBytes(storageRef, file).then((snapshot) => {
-    console.log("Uploaded a blob or file as .mind file!");
+//Get metadata properties
+getMetadata(storageRef).then((metadata) => {
+  console.log("Official Metadata: ", metadata);
+}).catch((error) => {
+  console.log("No Metadata or incorrect found");
 });
 
-/*uploadBytes(storageRef, bytes).then((snapshot) => {
-  console.log('Uploaded an array!');
-});*/
+newMetadata = {
+  cacheControl: "public,max-age=300",
+  contentType: "text/javascript"
+}
 
-const uploadTask = uploadBytesResumable(storageRef, file);
+updateMetadata(storageRef, newMetadata).then((metadata) => {
+  console.log("Updated Metadata as .mind file: ", metadata);
+}).catch((error) => {
+  console.log("Error: ", error);
+})
+
+// 'file' comes from the Blob or File API
+uploadBytesResumable(storageRef, file, metadata).then((uploadTaskSnapshot) => {
+    console.log("Uploaded a blob or file as .mind file!: ", uploadTaskSnapshot);
+}).catch((error) => {
+  console.log("Unsuccessful .mind file transfer to Storage: ", error);
+});
+
+const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
 // Register three observers:
 // 1. 'state_changed' observer, called any time the state changes
