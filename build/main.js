@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
             compile_Mind(img, nameWithoutExtension).then((mindFile) => {
               console.log("Official .mind file: ", mindFile);
               selectedValue = mindFile;
-              const mindRef = storageRef(storage, `mind/${mindFile.name}`);
+              storageRef(storage, `mind/${mindFile.name}`);
               console.log(".mind file set to selectedValue: ", selectedValue);
               count += 1;
               console.log("count is now: ", count);
