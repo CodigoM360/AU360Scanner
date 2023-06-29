@@ -2,6 +2,8 @@ import { storage, storageRef } from "../src/firebaseConfig.js";
 import { loadGLTF } from "../../libs/loader.js";
 const THREE = window.MINDAR.IMAGE.THREE;
 
+export const RefSrc = null;
+
 /* Enter DOM */
 document.addEventListener("DOMContentLoaded", () => {
   /* Check if THREE.js is being imported */
@@ -76,11 +78,12 @@ document.addEventListener("DOMContentLoaded", () => {
           img.src = URL.createObjectURL(file);
           console.log('img: ', img);
           console.log('img.src: ', img.src);
+          RefSrc = storageRef(storage, `mind/${img.src}`);
           if (img) { 
             compile_Mind(img, nameWithoutExtension).then((mindFile) => {
               console.log("Official .mind file: ", mindFile);
               selectedValue = mindFile;
-              storageRef(storage, `mind/${mindFile.name}`);
+              //storageRef(storage, `mind/${mindFile.name}`);
               console.log(".mind file set to selectedValue: ", selectedValue);
               count += 1;
               console.log("count is now: ", count);
