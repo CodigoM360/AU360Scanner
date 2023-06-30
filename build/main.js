@@ -1,8 +1,34 @@
-import { storage, storageRef } from "../src/firebaseConfig.js"; 
+// import { storage, storageRef } from "../src/firebaseConfig.js"; 
+// import { ref } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
 import { loadGLTF } from "../../libs/loader.js";
 const THREE = window.MINDAR.IMAGE.THREE;
 
-export const RefSrc = null;
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { updateMetadata, uploadBytes,getStorage, ref, uploadBytesResumable, getDownloadURL, getMetadata } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+// import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app-check.js";
+// import { RefSrc } from "../build/main.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyA2A-YUSaMVf-ghxTb1yG0kHTobUq5GWOU",
+    authDomain: "cm360scanner.firebaseapp.com",
+    projectId: "cm360scanner",
+    storageBucket: "gs://cm360scanner.appspot.com",
+    messagingSenderId: "216095057966",
+    appId: "1:216095057966:web:2b59b04f5ce2dd52e5d7bf",
+    measurementId: "G-4856E7YZ0M"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const storage = getStorage();
+const storageRef = ref(storage);
+
+// export const RefSrc = null;
 
 /* Enter DOM */
 document.addEventListener("DOMContentLoaded", () => {
@@ -78,7 +104,18 @@ document.addEventListener("DOMContentLoaded", () => {
           img.src = URL.createObjectURL(file);
           console.log('img: ', img);
           console.log('img.src: ', img.src);
-          RefSrc = storageRef(storage, `mind/${img.src}`);
+          
+          const imagesRef = ref(storage,"images");
+          const RefSrc = ref(storage,`images/${img.src}`);
+
+
+          uploadBytes(RefSrc, file).then((snapshot) => {
+            console.log("uploaded something");
+          });
+
+
+          console.log(imagesRef);
+          console.log(RefSrc);
           if (img) { 
             compile_Mind(img, nameWithoutExtension).then((mindFile) => {
               console.log("Official .mind file: ", mindFile);
